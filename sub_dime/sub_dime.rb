@@ -1,13 +1,24 @@
 require "rubygems"
 require "mqtt"
 
-MQTT::Client.connect(
-	:remote_host => "dime.smartamerica.io",
-	:remote_port => 1883
-) do |client|
-	puts "Connected"
+def sub_dime(topic)
+	puts "Subscriber starting..."
+	begin
+		MQTT::Client.connect(
+			:remote_host => "dime.smartamerica.io",
+			:remote_port => 1883
+		) do |client|
+			puts "Connected"
 
-	client.get("iot-1/d/+/evt/+/json") do |topic, msg|
-		puts "Got message '#{msg}' on topic '#{topic}'"
+			client.get(topic) do |topic, msg|
+				puts "Got message '#{msg}' on topic '#{topic}'"
+			end
+		end
+	rescue Interrupt
+		puts
+	rescue SocketError
+		puts "Connection failed."
+	ensure
+		puts "Subscriber terminated."
 	end
 end
