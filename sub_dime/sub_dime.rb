@@ -5,7 +5,7 @@ def sub_dime(topic)
 	puts "Subscriber starting..."
 	begin
 		MQTT::Client.connect(
-			:remote_host => "dime.smartamerica.io",
+			:remote_host => "mqtt2.m2m4connectedlife.com",
 			:remote_port => 1883
 		) do |client|
 			puts "Connected"
